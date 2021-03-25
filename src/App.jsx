@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { publicAPI } from "./API.js";
 
 // returns a promise
 const searchMarvel = {
   fetchMarvelAPI(characterName) {
     const characterURL = encodeURI(
-      `https://gateway.marvel.com/v1/public/characters?name=${characterName}&apikey=3a7a8c25e992e08f4c1620aa8398c36b`
+      `https://gateway.marvel.com/v1/public/characters?name=${characterName}&apikey=${publicAPI}`
     );
 
     return fetch(characterURL)
