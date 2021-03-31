@@ -1,49 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { publicAPI } from "./API.js";
 
-// returns a promise
-const searchMarvel = {
-  fetchMarvelAPI(characterName) {
-    const characterURL = encodeURI(
-      `https://gateway.marvel.com/v1/public/characters?name=${characterName}&apikey=${publicAPI}`
-    );
-
-    return fetch(characterURL)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log("API FETCH: ", data.data.results[0]);
-        return data.data.results[0];
-      })
-      .catch((err) => {
-        console.warn("ERR, in API call: ", err);
-        return null;
-      });
-  },
+// custom hook: NEED TO EXPORT THIS
+const useIsMount = () => {
+  const isMountRef = useRef(true);
+  useEffect(() => {
+    isMountRef.current = false;
+  }, []);
+  return isMountRef.current;
 };
 
 function App() {
-  const [name, setName] = useState("");
-  const [info, setInfo] = useState(null);
-  const [description, setDescription] = useState("");
+  const [query, setQuery] = useState("");
+  const [url, setUrl] = useState("");
+  const [characterData, setCharacterData] = useState();
+  // Custom Hook
+  const isFirstRender = useIsMount();
 
   useEffect(() => {
-    fetchCharacter(info);
-  }, [info]);
-
-  const fetchCharacter = (character) => {
-    searchMarvel.fetchMarvelAPI(character).then((res) => {
-      console.log(res);
-      setDescription(res.description);
-    });
-  };
+    if (isFirstRender) {
+      console.log("First Render");
+    } else {
+      console.log("Subsequent Render");
+      // returns a promise
+      function fetchMarvelAPI() {
+        return fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            // console.log("API FETCH: ", data.data);
+            // returns an object
+            setCharacterData(data.data.results[0]);
+          })
+          .catch((err) => {
+            console.warn("ERR, in API call: ", err);
+            return null;
+          });
+      }
+      fetchMarvelAPI();
+    }
+  }, [url]);
 
   const handleChange = (event) => {
-    setName(event.target.value);
+    setQuery(event.target.value);
   };
   // fetch the api on submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    setInfo(name);
+    setUrl(
+      `https://gateway.marvel.com/v1/public/characters?name=${query}&apikey=${publicAPI}`
+    );
   };
 
   return (
@@ -58,7 +63,7 @@ function App() {
           <br />
           <input
             type="text"
-            value={name}
+            value={query}
             placeholder="Hulk, Spider-Man, Iron Man, etc."
             onInput={handleChange}
             required
@@ -66,10 +71,18 @@ function App() {
         </label>
         <input type="submit" value="Submit" />
       </form>
-
-      <h2>{info}</h2>
-      {description && <p>{description}</p>}
-
+      {/* Stretch Goal: No need to rerender this part constantly when typing*/}
+      {characterData && (
+        <div className="Marvel-Info">
+          <h2>{characterData.name}</h2>
+          <img
+            src={`${characterData.thumbnail.path}/portrait_uncanny.jpg`}
+            alt={`portrait of ${characterData.name}`}
+          />
+          <p>{characterData.description}</p>
+        </div>
+      )}
+      {characterData && console.log(characterData)}
       <footer>
         <a href="http://marvel.com">Data provided by Marvel. © 2021 MARVEL</a>
       </footer>
