@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { publicAPI } from "./API.js";
+// Components
+import Header from "./components/Header.jsx";
+import Loading from "./components/Loading.jsx";
+import CharacterCard from "./components/CharacterCard.jsx";
 
-// custom hook: NEED TO EXPORT THIS
-const useIsMount = () => {
-  const isMountRef = useRef(true);
-  useEffect(() => {
-    isMountRef.current = false;
-  }, []);
-  return isMountRef.current;
-};
+// Custom hook that checks initial mount
+import useIsMount from "./components/useIsMount.jsx";
 
 function App() {
   const [query, setQuery] = useState("");
   const [url, setUrl] = useState("");
   const [characterData, setCharacterData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   // Custom Hook
   const isFirstRender = useIsMount();
 
@@ -24,18 +23,21 @@ function App() {
       console.log("Subsequent Render");
       // returns a promise
       function fetchMarvelAPI() {
+        setIsLoading(true);
         return fetch(url)
           .then((response) => response.json())
           .then((data) => {
             // console.log("API FETCH: ", data.data);
             // returns an object
             setCharacterData(data.data.results[0]);
+            setIsLoading(false);
           })
           .catch((err) => {
             console.warn("ERR, in API call: ", err);
             return null;
           });
       }
+
       fetchMarvelAPI();
     }
   }, [url]);
@@ -53,9 +55,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="App-header">
-        Welcome to the Marvel Character Search Engine
-      </h1>
+      <Header />
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="">
@@ -72,16 +72,8 @@ function App() {
         <input type="submit" value="Submit" />
       </form>
       {/* Stretch Goal: No need to rerender this part constantly when typing*/}
-      {characterData && (
-        <div className="Marvel-Info">
-          <h2>{characterData.name}</h2>
-          <img
-            src={`${characterData.thumbnail.path}/portrait_uncanny.jpg`}
-            alt={`portrait of ${characterData.name}`}
-          />
-          <p>{characterData.description}</p>
-        </div>
-      )}
+      {isLoading ? <Loading /> : characterData && CharacterCard(characterData)}
+
       {characterData && console.log(characterData)}
       <footer>
         <a href="http://marvel.com">Data provided by Marvel. © 2021 MARVEL</a>
