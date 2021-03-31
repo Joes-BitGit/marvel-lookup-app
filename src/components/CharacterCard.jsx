@@ -1,14 +1,14 @@
 import React from "react";
 
-export const CharacterCard = (characterData) => {
+export const CharacterCard = (props) => {
   return (
     <div className="Marvel-Info">
-      <h2>{characterData.name}</h2>
+      <h2>{props.characterData.name}</h2>
       <img
-        src={`${characterData.thumbnail.path}/portrait_uncanny.jpg`}
-        alt={`portrait of ${characterData.name}`}
+        src={`${props.characterData.thumbnail.path}/portrait_uncanny.jpg`}
+        alt={`portrait of ${props.characterData.name}`}
       />
-      <p>{characterData.description}</p>
+      <p>{props.characterData.description}</p>
     </div>
   );
 };
