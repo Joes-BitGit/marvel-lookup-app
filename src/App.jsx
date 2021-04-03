@@ -33,6 +33,7 @@ function App() {
   return (
     <div className="App">
       <Header />
+
       <CharacterNameForm
         handleSubmit={handleSubmit}
         handleChange={handleChange}
@@ -49,7 +50,7 @@ function App() {
         characterData && <CharacterCard characterData={characterData} />
       )}
 
-      {console.log("Character Data:", characterData)}
+      {console.log("Character Data HERE:", characterData)}
       <footer>
         <a href="http://marvel.com">Data provided by Marvel. © 2021 MARVEL</a>
       </footer>
