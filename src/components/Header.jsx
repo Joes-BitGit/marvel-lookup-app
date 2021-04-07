@@ -9,7 +9,7 @@ const Header = () => {
     // </div>
     <div className="navbar-fixed">
       <nav className="nav-wrapper">
-        <a href="#" className="brand-logo">
+        <a href="https://www.marvel.com/" className="brand-logo">
           Marvel Search
         </a>
       </nav>
