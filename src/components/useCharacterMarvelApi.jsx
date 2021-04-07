@@ -25,12 +25,9 @@ const dataFetchReducer = (state, action) => {
 // Custom data fetching hook
 const useCharacterMarvelApi = () => {
   const [url, setUrl] = useState("");
-  // const [characterData, setCharacterData] = useState();
-  // const [isLoading, setIsLoading] = useState(false);
-  // // error checking
-  // const [isErrorAPI, setisErrorAPI] = useState(false);
-  // const [isErrorCharacter, setIsErrorCharacter] = useState(false);
 
+  // dispatch is a function that alters the state object and sends info
+  // args - action which has a type and an optional payload
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isErrorAPI: false,
