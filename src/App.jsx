@@ -15,7 +15,7 @@ function App() {
 
   // Custom Hook: checks the marvel api for character
   const [
-    { characterData, isLoading, isErrorAPI, isErrorCharacter },
+    { marvelData, isLoading, isErrorAPI, isErrorCharacter },
     setFetch,
   ] = useCharacterMarvelApi();
 
@@ -51,9 +51,9 @@ function App() {
       ) : isLoading ? (
         <Loading />
       ) : (
-        characterData && <CharacterCard characterData={characterData} />
+        marvelData && <CharacterCard characterData={marvelData} />
       )}
-      {console.log("Character Data HERE:", characterData)}
+      {console.log("Character Data HERE:", marvelData)}
       <footer>
         <a href="http://marvel.com">Data provided by Marvel. © 2021 MARVEL</a>
       </footer>

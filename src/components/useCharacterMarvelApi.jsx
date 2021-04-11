@@ -11,7 +11,7 @@ const dataFetchReducer = (state, action) => {
         isLoading: false,
         isErrorAPI: false,
         isErrorCharacter: false,
-        characterData: action.payload,
+        marvelData: action.payload,
       };
     case "FETCH_ERROR_API":
       return { ...state, isErrorAPI: true, isLoading: false };
@@ -32,7 +32,7 @@ const useCharacterMarvelApi = () => {
     isLoading: false,
     isErrorAPI: false,
     isErrorCharacter: false,
-    characterData: null,
+    marvelData: null,
   });
 
   //Custom Hook; first render check
