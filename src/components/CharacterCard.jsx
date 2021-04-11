@@ -1,7 +1,7 @@
 import React from "react";
 import { publicAPI } from "../API.js";
 // Custom hook that fetches to the marvel api for a character
-import useEventMarvelApi from "./useEventMarvelApi";
+import useEventMarvelApi from "./useCharacterMarvelApi";
 
 export const CharacterCard = (props) => {
   const handleEventSearch = (uri) => {
@@ -11,7 +11,7 @@ export const CharacterCard = (props) => {
 
   // Custom Hook: checks the marvel api for character
   const [
-    { eventData, isLoading, isErrorAPI, isErrorCharacter },
+    { marvelData, isLoading, isErrorAPI, isErrorCharacter },
     setFetch,
   ] = useEventMarvelApi();
 
@@ -46,10 +46,10 @@ export const CharacterCard = (props) => {
           </li>
         ))}
       </ol>
-      {eventData && (
+      {marvelData && (
         <img
-          src={`${eventData.thumbnail.path}/portrait_uncanny.jpg`}
-          alt={`portrait of ${eventData.title}`}
+          src={`${marvelData.thumbnail.path}/portrait_uncanny.jpg`}
+          alt={`portrait of ${marvelData.title}`}
         />
       )}
     </div>
