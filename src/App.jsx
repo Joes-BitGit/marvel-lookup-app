@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { publicAPI } from "./API.js";
+
 // Components
 import Header from "./components/Header.jsx";
 import Loading from "./components/Loading.jsx";
@@ -39,9 +40,12 @@ function App() {
         handleChange={handleChange}
         query={query}
       />
-
-      {isErrorAPI && <div>Something Went Horribly Wrong with the API😭</div>}
-
+      {isErrorAPI && (
+        <div>
+          Something Went Horribly Wrong with the API😭 Please refresh the page
+          to continue
+        </div>
+      )}
       {isErrorCharacter ? (
         <CharacterError />
       ) : isLoading ? (
@@ -49,7 +53,6 @@ function App() {
       ) : (
         characterData && <CharacterCard characterData={characterData} />
       )}
-
       {console.log("Character Data HERE:", characterData)}
       <footer>
         <a href="http://marvel.com">Data provided by Marvel. © 2021 MARVEL</a>

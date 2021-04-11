@@ -49,8 +49,7 @@ const useCharacterMarvelApi = () => {
         return fetch(url)
           .then((response) => response.json())
           .then((character) => {
-            // returns an object
-            // console.log("API CHARACTER INFO", character.data);
+            // returns an object of Character info
             // display an error after you find out the character data is garbage
             if (character.data.count) {
               dispatch({
@@ -58,7 +57,6 @@ const useCharacterMarvelApi = () => {
                 payload: character.data.results[0],
               });
             } else {
-              console.log("CHARACTER NOT FOUND 🤷‍♂️");
               dispatch({ type: "FETCH_ERROR_CHARACTER" });
             }
           })
